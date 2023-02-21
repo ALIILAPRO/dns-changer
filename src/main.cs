@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Management;
 using System.Windows.Forms;
@@ -82,6 +82,8 @@ namespace DNS_Changer___by_aliilapro__.frm
                 pic_on.Visible = true;
                 btn_shecan.Text = "Disconnect";
                 tabPage2.Enabled = false;
+                tabPage3.Enabled = false;
+                tabPage4.Enabled = false;
                 isconnect = true;
             }
             else
@@ -91,6 +93,8 @@ namespace DNS_Changer___by_aliilapro__.frm
                 pic_on.Visible = false;
                 btn_shecan.Text = "Connect";
                 tabPage2.Enabled = true;
+                tabPage3.Enabled = true;
+                tabPage4.Enabled = true;
                 isconnect = false;
             }
         }
@@ -104,6 +108,8 @@ namespace DNS_Changer___by_aliilapro__.frm
                 pic_on_cl.Visible = true;
                 btn_begzar.Text = "Disconnect";
                 tabPage1.Enabled = false;
+                tabPage3.Enabled = false;
+                tabPage4.Enabled = false;
                 isconnect = true;
             }
             else
@@ -113,10 +119,63 @@ namespace DNS_Changer___by_aliilapro__.frm
                 pic_on_cl.Visible = false;
                 btn_begzar.Text = "Connect";
                 tabPage1.Enabled = true;
+                tabPage3.Enabled = true;
+                tabPage4.Enabled = true;
                 isconnect = false;
             }
         }
 
+        private void btn_403_Click(object sender, System.EventArgs e)
+        {
+            if (!isconnect)
+            {
+                SetDNS("10.202.10.202", "10.202.10.102");
+                pic_off_c2.Visible = false;
+                pic_on_c2.Visible = true;
+                btn_403.Text = "Disconnect";
+                tabPage1.Enabled = false;
+                tabPage2.Enabled = false;
+                tabPage4.Enabled = false;
+                isconnect = true;
+            }
+            else
+            {
+                UnsetDNS();
+                pic_off_c2.Visible = true;
+                pic_on_c2.Visible = false;
+                btn_403.Text = "Connect";
+                tabPage1.Enabled = true;
+                tabPage2.Enabled = true;
+                tabPage4.Enabled = true;
+                isconnect = false;
+            }
+        }
+
+        private void btn_radar_Click(object sender, System.EventArgs e)
+        {
+            if (!isconnect)
+            {
+                SetDNS("10.202.10.10", "10.202.10.11");
+                pic_off_c3.Visible = false;
+                pic_on_c3.Visible = true;
+                btn_radar.Text = "Disconnect";
+                tabPage1.Enabled = false;
+                tabPage2.Enabled = false;
+                tabPage3.Enabled = false;
+                isconnect = true;
+            }
+            else
+            {
+                UnsetDNS();
+                pic_off_c3.Visible = true;
+                pic_on_c3.Visible = false;
+                btn_radar.Text = "Connect";
+                tabPage1.Enabled = true;
+                tabPage2.Enabled = true;
+                tabPage3.Enabled = true;
+                isconnect = false;
+            }
+        }
         private void telegramToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             Process.Start("https://t.me/aliilapro");
@@ -124,7 +183,35 @@ namespace DNS_Changer___by_aliilapro__.frm
 
         private void githubToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            Process.Start("https://github.com/aliilapro");
+            Process.Start("https://github.com/ALIILAPRO/dns-changer");
         }
+
+        private void main_Load(object sender, System.EventArgs e)
+        {
+            noti.BalloonTipTitle = "DNS Changer [ by aliilapro ]";
+            noti.BalloonTipText = "The program is running ...";
+            noti.Text = "DNS Changer [ by aliilapro ]";
+        }
+
+        private void noti_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+            noti.Visible = false;
+            WindowState = FormWindowState.Normal;
+        }
+
+        private void main_Resize(object sender, System.EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+                noti.Visible = true;
+                noti.ShowBalloonTip(1000);
+            }
+            else if (FormWindowState.Normal == this.WindowState)
+            { noti.Visible = false; }
+        }
+
+        
     }
 }
