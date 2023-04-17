@@ -3,8 +3,8 @@ This application allows the user to change their DNS settings to a predefined se
 
 ## How to Use
 
-1. Download and launch the application. [Dns Changer.exe](https://github.com/ALIILAPRO/dns-changer/releases/download/v1.3.0/DNS.Changer.exe)
-2. Choose one of the available DNS server sets by clicking on its corresponding button. There are currently four sets available: "shecan", "begzar", "403", and "radar".
+1. Download and launch the application. [Dns Changer.exe](https://github.com/ALIILAPRO/dns-changer/releases/download/v1.4.0/DNSChange.by.aliilapro.v1_4_0.exe)
+2. Choose one of the available DNS server sets by clicking on its corresponding button. There are currently four sets available: "shecan", "begzar", "403", "radar" and "Electro".
 3. Click the "Connect" button to apply the selected DNS servers. A green indicator will appear to show that the connection is active.
 4. To disconnect and revert to the original DNS settings, click the "Disconnect" button. A red indicator will appear to show that the connection is inactive.
 
