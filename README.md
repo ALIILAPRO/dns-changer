@@ -18,6 +18,7 @@ By default, the app comes with a list of popular DNS servers in Iran.
 | Begzar DNS   | 185.55.225.25,185.55.226.26 |
 | 403 DNS      | 10.202.10.202,10.202.10.102 |
 | Radar DNS    | 10.202.10.10,10.202.10.11 |
+| Electro DNS  | 78.157.42.100,78.157.42.101 |
 
 ## ScreenShot
 ![](https://github.com/ALIILAPRO/dns-changer/blob/master/ScreenShot/expic.JPG)
