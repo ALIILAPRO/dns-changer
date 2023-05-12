@@ -21,7 +21,7 @@ By default, the app comes with a list of popular DNS servers in Iran.
 | Electro DNS  | 78.157.42.100,78.157.42.101 |
 
 ## ScreenShot
-![](https://github.com/ALIILAPRO/dns-changer/blob/master/ScreenShot/expic.JPG)
+![](https://github.com/ALIILAPRO/dns-changer/blob/master/ScreenShot/pic.JPG)
 
 ## Acknowledgments
 This application was developed by [ALIILAPRO](https://github.com/ALIILAPRO/) and is provided under the GPL-3.0 license. The DNS server sets were provided by the developer and may be subject to change.
