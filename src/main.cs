@@ -4,13 +4,29 @@ using System.Management;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.IO;
 using System;
 using System.Net.Http;
+using System.Net;
 
 namespace DNS_Changer___by_aliilapro__.frm
 {
     public partial class main : Form
     {
+
+        private const string AppDataFolder = "DnsChangerByALIILAPRO";
+        private const string ConfigFileName = "dns.config";
+        private static Random rnd = new Random();
+        private string GenerateUniqCode(int len)
+        {
+            string _allstring = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            string _re = "";
+            while (_re.Length < len)
+            {
+                _re += _allstring[rnd.Next(0, _allstring.Length - 1)].ToString();
+            }
+            return _re;
+        }
         public Boolean Isconnect;
         private Dictionary<string, string[]> dnsServers = new Dictionary<string, string[]>
     {
@@ -33,6 +49,8 @@ namespace DNS_Changer___by_aliilapro__.frm
         public main()
         {
             InitializeComponent();
+
+            LoadDnsServersFromConfig();
 
             foreach (var server in dnsServers.Keys)
             {
@@ -85,6 +103,70 @@ namespace DNS_Changer___by_aliilapro__.frm
             }
 
         }
+
+        private void LoadDnsServersFromConfig()
+        {
+            string appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string folderPath = Path.Combine(appDataFolderPath, AppDataFolder);
+            Directory.CreateDirectory(folderPath);
+
+            string filePath = Path.Combine(folderPath, ConfigFileName);
+            if (File.Exists(filePath))
+            {
+                string[] lines = File.ReadAllLines(filePath);
+                dnsServers.Clear();
+
+                foreach (string line in lines)
+                {
+                    string[] parts = line.Split('=');
+                    if (parts.Length == 2)
+                    {
+                        string dnsName = parts[0];
+                        string[] dnsIPs = parts[1].Split(',');
+
+                        dnsServers.Add(dnsName, dnsIPs);
+                    }
+                }
+
+                txt_log.AppendText("DNS servers loaded from file dns.config\r\n");
+            }
+            else
+            {
+                GenerateFolderAndSaveDNS();
+            }
+        }
+
+        private void SaveDnsServersToConfig()
+        {
+            string appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string folderPath = Path.Combine(appDataFolderPath, AppDataFolder);
+            Directory.CreateDirectory(folderPath);
+
+            string filePath = Path.Combine(folderPath, ConfigFileName);
+
+            List<string> lines = new List<string>();
+            foreach (var dnsServer in dnsServers)
+            {
+                string dnsName = dnsServer.Key;
+                string[] dnsIPs = dnsServer.Value;
+                string line = dnsName + "=" + string.Join(",", dnsIPs);
+                lines.Add(line);
+            }
+
+            File.WriteAllLines(filePath, lines);
+
+            txt_log.AppendText("DNS servers saved in file dns.config\r\n");
+        }
+
+        private void GenerateFolderAndSaveDNS()
+        {
+            string appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string folderPath = Path.Combine(appDataFolderPath, AppDataFolder);
+            Directory.CreateDirectory(folderPath);
+
+            SaveDnsServersToConfig();
+        }
+
 
         public static NetworkInterface GetActiveEthernetOrWifiNetworkInterface()
         {
@@ -176,16 +258,7 @@ namespace DNS_Changer___by_aliilapro__.frm
                 Isconnect = false;
             }
         }
-        private void telegramToolStripMenuItem_Click(object sender, System.EventArgs e)
-        {
-            Process.Start("https://t.me/aliilapro");
-        }
-
-        private void githubToolStripMenuItem_Click(object sender, System.EventArgs e)
-        {
-            Process.Start("https://github.com/ALIILAPRO/dns-changer");
-        }
-
+        
         private void main_Load(object sender, System.EventArgs e)
         {
             noti.BalloonTipTitle = "DNS Changer [ by aliilapro ]";
@@ -210,32 +283,6 @@ namespace DNS_Changer___by_aliilapro__.frm
             }
             else if (FormWindowState.Normal == this.WindowState)
             { noti.Visible = false; }
-        }
-
-        private void label1_Click(object sender, System.EventArgs e)
-        {
-
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://idpay.ir/aliilapro");
-        }
-
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("https://paypal.me/aliilapro");
-
-        }
-
-        private void toolStripMenuItem2_Click(object sender, System.EventArgs e)
-        {
-            Process.Start("https://github.com/ALIILAPRO/dns-changer/releases");
-        }
-
-        private void toolStripMenuItem1_Click(object sender, System.EventArgs e)
-        {
-            Process.Start("https://github.com/ALIILAPRO/DNS-Server-Switcher");
         }
 
         private async void btn_check_Click(object sender, System.EventArgs e)
@@ -282,8 +329,8 @@ namespace DNS_Changer___by_aliilapro__.frm
 
         private void btn_connect_custom_Click(object sender, EventArgs e)
         {
-            string dns1 = txt_custom1.Text.Trim();
-            string dns2 = txt_custom2.Text.Trim();
+            string dns1 = txt_custom_dns_ip1.Text.Trim();
+            string dns2 = txt_custom_dns_ip2.Text.Trim();
 
             SetDNS(dns1, dns2);
             txt_log.AppendText($"DNS {dns1} / {dns2}  has been set.\r\n");
@@ -300,8 +347,11 @@ namespace DNS_Changer___by_aliilapro__.frm
             bool @true = this.checkBox1.Checked;
             if (@true)
             {
+                string customDNSName = this.GenerateUniqCode(6);
+                txt_custom_dns_name.Text = "DNS_" + customDNSName;
                 btn_connect_custom.Enabled = true;
                 btn_disconnect_custom.Enabled = true;
+                btn_save.Enabled = true;
                 btn_connect.Enabled = false;
                 btn_disconnect.Enabled = false;
             }
@@ -309,9 +359,111 @@ namespace DNS_Changer___by_aliilapro__.frm
             {
                 btn_connect_custom.Enabled = false;
                 btn_disconnect_custom.Enabled = false;
+                btn_save.Enabled = false;
                 btn_connect.Enabled = true;
                 btn_disconnect.Enabled = true;
             }
+        }
+
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+            string dnsName = txt_custom_dns_name.Text;
+            string dnsIP1 = txt_custom_dns_ip1.Text;
+            string dnsIP2 = txt_custom_dns_ip2.Text;
+
+            if (!string.IsNullOrEmpty(dnsName) && !string.IsNullOrEmpty(dnsIP1) && !string.IsNullOrEmpty(dnsIP2))
+            {
+                string[] dnsIPs = { dnsIP1, dnsIP2 };
+                dnsServers.Add(dnsName, dnsIPs);
+                cmb_dns.Items.Add(dnsName);
+
+                SaveDnsServersToConfig();
+
+                txt_log.AppendText($"Custom DNS '{dnsName}' saved in dns.config\r\n");
+            }
+            else
+            {
+                MessageBox.Show("Please enter valid DNS details.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btn_updateconfig_Click(object sender, EventArgs e)
+        {
+            string url = "https://raw.githubusercontent.com/ALIILAPRO/dns-changer/master/config/dns.txt";
+
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                HttpWebResponse r = (HttpWebResponse)((HttpWebRequest)WebRequest.Create(url)).GetResponse();
+                string response = (new StreamReader(r.GetResponseStream())).ReadToEnd();
+
+                if (!string.IsNullOrEmpty(response))
+                {
+                    string[] dnsDetails = response.Split(',');
+
+                    if (dnsDetails.Length == 3)
+                    {
+                        string dnsName = dnsDetails[0];
+                        string dnsIP1 = dnsDetails[1];
+                        string dnsIP2 = dnsDetails[2];
+
+                        string[] dnsIPs = { dnsIP1, dnsIP2 };
+                        dnsServers.Add(dnsName, dnsIPs);
+                        cmb_dns.Items.Add(dnsName);
+
+                        SaveDnsServersToConfig();
+                        txt_log.AppendText($"Custom DNS '{dnsName}' added.\r\n");
+                    }
+                    else
+                    {
+                        txt_log.AppendText("Error: Invalid format in the response.\r\n");
+                    }
+                }
+                else
+                {
+                    txt_log.AppendText("Error: Empty response.\r\n");
+                }
+            }
+            catch (Exception ex)
+            {
+                txt_log.AppendText($"Error: {ex.Message}\r\n");
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://idpay.ir/aliilapro");
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://paypal.me/aliilapro");
+
+        }
+
+        private void toolStripMenuItem2_Click(object sender, System.EventArgs e)
+        {
+            Process.Start("https://github.com/ALIILAPRO/dns-changer/releases");
+        }
+
+        private void toolStripMenuItem1_Click(object sender, System.EventArgs e)
+        {
+            Process.Start("https://github.com/ALIILAPRO/DNS-Server-Switcher");
+        }
+
+        private void telegramToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            Process.Start("https://t.me/aliilapro");
+        }
+
+        private void githubToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            Process.Start("https://github.com/ALIILAPRO/dns-changer");
+        }
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
         }
 
     }
