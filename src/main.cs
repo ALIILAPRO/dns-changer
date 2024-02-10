@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Management;
@@ -16,6 +17,7 @@ namespace DNS_Changer___by_aliilapro__.frm
 
         private const string AppDataFolder = "DnsChangerByALIILAPRO";
         private const string ConfigFileName = "dns.config";
+        private const string RegistryKeyName = "DNS.Changer.by.aliilapro.exe";
         private static Random rnd = new Random();
         private string GenerateUniqCode(int len)
         {
@@ -51,6 +53,7 @@ namespace DNS_Changer___by_aliilapro__.frm
             InitializeComponent();
 
             LoadDnsServersFromConfig();
+            UpdateConnectContextMenu();
 
             foreach (var server in dnsServers.Keys)
             {
@@ -241,6 +244,7 @@ namespace DNS_Changer___by_aliilapro__.frm
                 btn_connect.Enabled = false;
                 btn_disconnect.Enabled = true;
                 cmb_dns.Enabled = false;
+                noti_btndisconnect.Enabled = true;
                 Isconnect = true;
             }
         }
@@ -255,15 +259,30 @@ namespace DNS_Changer___by_aliilapro__.frm
                 btn_connect.Enabled = true;
                 btn_disconnect.Enabled = false;
                 cmb_dns.Enabled = true;
+                noti_btndisconnect.Enabled = true;
                 Isconnect = false;
             }
         }
         
         private void main_Load(object sender, System.EventArgs e)
         {
+
+            if (IsSetToRunAtStartup())
+            {
+                ch_startup.Checked = true;
+            }
+            else
+            {
+                ch_startup.Checked = false;
+            }
+
             noti.BalloonTipTitle = "DNS Changer [ by aliilapro ]";
             noti.BalloonTipText = "The program is running ...";
             noti.Text = "DNS Changer [ by aliilapro ]";
+
+
+           
+            noti.ContextMenuStrip = contextMenuStrip1;
         }
 
         private void noti_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -334,12 +353,18 @@ namespace DNS_Changer___by_aliilapro__.frm
 
             SetDNS(dns1, dns2);
             txt_log.AppendText($"DNS {dns1} / {dns2}  has been set.\r\n");
+            btn_connect_custom.Enabled = false;
+            btn_disconnect_custom.Enabled = true;
+            noti_btndisconnect.Enabled = true;
         }
 
         private void btn_disconnect_custom_Click(object sender, EventArgs e)
         {
             UnsetDNS();
             txt_log.AppendText("DNS settings have been cleared.\r\n");
+            btn_connect_custom.Enabled = true;
+            btn_disconnect_custom.Enabled = false;
+            noti_btndisconnect.Enabled = false;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -350,7 +375,7 @@ namespace DNS_Changer___by_aliilapro__.frm
                 string customDNSName = this.GenerateUniqCode(6);
                 txt_custom_dns_name.Text = "DNS_" + customDNSName;
                 btn_connect_custom.Enabled = true;
-                btn_disconnect_custom.Enabled = true;
+                btn_disconnect_custom.Enabled = false;
                 btn_save.Enabled = true;
                 btn_connect.Enabled = false;
                 btn_disconnect.Enabled = false;
@@ -431,6 +456,94 @@ namespace DNS_Changer___by_aliilapro__.frm
             }
         }
 
+        private bool IsSetToRunAtStartup()
+        {
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", false);
+            if (rkApp != null)
+            {
+                string value = (string)rkApp.GetValue(RegistryKeyName);
+                rkApp.Close();
+
+                if (value != null && value == Application.ExecutablePath.ToString())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void AddToStartup()
+        {
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            rkApp.SetValue(RegistryKeyName, Application.ExecutablePath.ToString());
+            rkApp.Close();
+            ch_startup.Checked = true;
+            txt_log.AppendText("Info: DNS changer has been added to startup.\r\n");
+        }
+
+        private void RemoveFromStartup()
+        {
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            rkApp.DeleteValue(RegistryKeyName, false); 
+            rkApp.Close();
+            ch_startup.Checked = false;
+            txt_log.AppendText("Info: DNS changer has been removed from startup.\r\n");
+        }
+
+        private void DnsServerMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem menuItem && menuItem.Tag is string[])
+            {
+                string[] dnsIPs = (string[])menuItem.Tag;
+                SetDNS(dnsIPs[0], dnsIPs[1]);
+                noti.ShowBalloonTip(2000, "DNS Server Connected", "DNS " + menuItem + " has been set.\r\n", ToolTipIcon.Info);
+                txt_log.AppendText("DNS " + menuItem + " has been set.\r\n");
+                noti_btndisconnect.Enabled = true;
+            }
+        }
+        private void UpdateConnectContextMenu()
+        {
+            noti_btnconnect.DropDownItems.Clear();
+
+            foreach (var dnsServer in dnsServers)
+            {
+                ToolStripMenuItem menuItem = new ToolStripMenuItem(dnsServer.Key);
+                menuItem.Tag = dnsServer.Value;
+                menuItem.Click += DnsServerMenuItem_Click;
+                noti_btnconnect.DropDownItems.Add(menuItem);
+            }
+        }
+
+        private void ch_startup_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ch_startup.Checked)
+            {
+                AddToStartup();
+            }
+            else
+            {
+                RemoveFromStartup();
+            }
+        }
+
+        private void noti_btndisconnect_Click(object sender, EventArgs e)
+        {
+            UnsetDNS();
+            noti.ShowBalloonTip(2000, "DNS Server Disonnected", "DNS settings have been cleared.", ToolTipIcon.Info);
+            txt_log.AppendText("DNS settings have been cleared.\r\n");
+            if (btn_connect.Enabled == false && btn_disconnect.Enabled == true)
+            {
+                btn_connect.Enabled = true;
+                btn_disconnect.Enabled = false;
+            }
+            if (btn_connect_custom.Enabled == false && btn_disconnect_custom.Enabled == true)
+            {
+                btn_connect_custom.Enabled = true;
+                btn_disconnect_custom.Enabled = false;
+            }
+        }
+
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://idpay.ir/aliilapro");
@@ -461,10 +574,10 @@ namespace DNS_Changer___by_aliilapro__.frm
         {
             Process.Start("https://github.com/ALIILAPRO/dns-changer");
         }
-        private void tabPage2_Click(object sender, EventArgs e)
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-
+            Application.Exit();
         }
-
     }
 }
