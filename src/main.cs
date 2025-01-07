@@ -425,24 +425,37 @@ namespace DNS_Changer___by_aliilapro__.frm
 
                 if (!string.IsNullOrEmpty(response))
                 {
-                    string[] dnsDetails = response.Split(',');
+                    string[] lines = response.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
 
-                    if (dnsDetails.Length == 3)
+                    foreach (string line in lines)
                     {
-                        string dnsName = dnsDetails[0];
-                        string dnsIP1 = dnsDetails[1];
-                        string dnsIP2 = dnsDetails[2];
+                        string[] dnsDetails = line.Split(',');
 
-                        string[] dnsIPs = { dnsIP1, dnsIP2 };
-                        dnsServers.Add(dnsName, dnsIPs);
-                        cmb_dns.Items.Add(dnsName);
+                        if (dnsDetails.Length == 3)
+                        {
+                            string dnsName = dnsDetails[0].Trim();
+                            string dnsIP1 = dnsDetails[1].Trim();
+                            string dnsIP2 = dnsDetails[2].Trim();
 
-                        SaveDnsServersToConfig();
-                        txt_log.AppendText($"Custom DNS '{dnsName}' added.\r\n");
-                    }
-                    else
-                    {
-                        txt_log.AppendText("Error: Invalid format in the response.\r\n");
+                            // Check if the DNS name already exists
+                            if (!dnsServers.ContainsKey(dnsName))
+                            {
+                                string[] dnsIPs = { dnsIP1, dnsIP2 };
+                                dnsServers.Add(dnsName, dnsIPs);
+                                cmb_dns.Items.Add(dnsName);
+
+                                SaveDnsServersToConfig();
+                                txt_log.AppendText($"Custom DNS '{dnsName}' added.\r\n");
+                            }
+                            else
+                            {
+                                txt_log.AppendText($"Skipping existing DNS: '{dnsName}'.\r\n");
+                            }
+                        }
+                        else
+                        {
+                            txt_log.AppendText($"Error: Invalid format in line: {line}\r\n");
+                        }
                     }
                 }
                 else
@@ -454,6 +467,7 @@ namespace DNS_Changer___by_aliilapro__.frm
             {
                 txt_log.AppendText($"Error: {ex.Message}\r\n");
             }
+
         }
 
         private bool IsSetToRunAtStartup()
@@ -544,6 +558,58 @@ namespace DNS_Changer___by_aliilapro__.frm
             }
         }
 
+        private long GetPingTime(string ipAddress)
+        {
+            try
+            {
+                using (Ping ping = new Ping())
+                {
+                    PingReply reply = ping.Send(ipAddress, 1000); 
+                    if (reply.Status == IPStatus.Success)
+                    {
+                        return reply.RoundtripTime;
+                    }
+                }
+            }
+            catch
+            {
+               
+            }
+            return long.MaxValue;
+        }
+
+        private string[] FindOptimalDNS()
+        {
+            string optimalDNSName = "";
+            long minimumPing = long.MaxValue;
+            string[] optimalDNS = null;
+
+            foreach (var dnsEntry in dnsServers)
+            {
+                string dnsName = dnsEntry.Key;
+                string[] dnsIPs = dnsEntry.Value;
+
+                long averagePing = (GetPingTime(dnsIPs[0]) + GetPingTime(dnsIPs[1])) / 2;
+
+                if (averagePing < minimumPing)
+                {
+                    minimumPing = averagePing;
+                    optimalDNSName = dnsName;
+                    optimalDNS = dnsIPs;
+                }
+
+                txt_log.AppendText($"DNS: {dnsName} -- Ping: {averagePing} ms\r\n");
+            }
+
+            if (optimalDNS != null)
+            {
+                txt_log.AppendText($"Optimal DNS: {optimalDNSName} -- Ping: {minimumPing} ms\r\n");
+            }
+            return optimalDNS;
+        }
+
+
+
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("https://idpay.ir/aliilapro");
@@ -578,6 +644,25 @@ namespace DNS_Changer___by_aliilapro__.frm
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string[] optimalDNS = FindOptimalDNS();
+            if (optimalDNS != null)
+            {
+                SetDNS(optimalDNS[0], optimalDNS[1]);
+                txt_log.AppendText($"Optimal DNS {string.Join(", ", optimalDNS)} has been set.\r\n");
+            }
+            else
+            {
+                txt_log.AppendText("Failed to find an optimal DNS.\r\n");
+            }
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }
