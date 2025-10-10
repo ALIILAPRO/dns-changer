@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Changer - Access Blocked Websites</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+        }
+        .connection-active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .connection-inactive {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen">
+    <nav class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <i data-feather="globe" class="text-purple-400 w-8 h-8"></i>
+                    <span class="text-xl font-bold text-white">DNS Changer - by ALIILAPRO</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#features" class="text-gray-300 hover:text-purple-400 transition-colors">Features</a>
+                    <a href="#how-to-use" class="text-gray-300 hover:text-purple-400 transition-colors">How to Use</a>
+                    <a href="#servers" class="text-gray-300 hover:text-purple-400 transition-colors">DNS Servers</a>
+                    <a href="#screenshot" class="text-gray-300 hover:text-purple-400 transition-colors">Screenshot</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                        Download Now
+                    </button>
+                    <div class="md:hidden">
+                        <i data-feather="menu" class="w-6 h-6 text-white"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="vanta-background" class="gradient-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    Break Through Digital Barriers
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">
+                    A simple yet powerful DNS changer to access blocked websites and improve your internet experience
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="bg-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-purple-700 transition-colors">
+                        <i data-feather="download" class="inline w-5 h-5 mr-2"></i>
+                        Download DNS Changer
+                    </button>
+                    <button class="border-2 border-gray-300 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-800 transition-colors">
+                        View on GitHub
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="features" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Why Choose DNS Freedom Flow?</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Experience seamless internet access with our carefully curated DNS servers
+                </p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-700 p-8 rounded-xl border border-gray-600">
+                    <i data-feather="shield" class="w-12 h-12 text-purple-400 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Enhanced Security</h3>
+                    <p class="text-gray-300">Protect your online activities with reliable DNS servers that prioritize your privacy and security.</p>
+                </div>
+                <div class="card-hover bg-gray-700 p-8 rounded-xl border border-gray-600">
+                    <i data-feather="zap" class="w-12 h-12 text-purple-400 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Faster Speeds</h3>
+                    <p class="text-gray-300">Optimized DNS servers can significantly improve your browsing speed and reduce latency.</p>
+                </div>
+                <div class="card-hover bg-gray-700 p-8 rounded-xl border border-gray-600">
+                    <i data-feather="unlock" class="w-12 h-12 text-purple-400 mb-4"></i>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Access Everything</h3>
+                    <p class="text-gray-300">Bypass regional restrictions and access your favorite websites and services without limitations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-to-use" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Simple Setup, Instant Results</h2>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-purple-400 font-bold text-xl">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Download</h3>
+                    <p class="text-gray-300">Get the latest version from our GitHub releases</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-purple-400 font-bold text-xl">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Choose DNS</h3>
+                    <p class="text-gray-300">Select from our curated list of reliable DNS servers</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-purple-400 font-bold text-xl">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Connect</h3>
+                    <p class="text-gray-300">Click connect and enjoy unrestricted internet access</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-purple-400 font-bold text-xl">4</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Disconnect</h3>
+                    <p class="text-gray-300">Revert to original settings anytime with one click</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servers" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Trusted DNS Servers</h2>
+                <p class="text-xl text-gray-300">Carefully selected for reliability and performance</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card-hover bg-gradient-to-br from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700">
+                    <h3 class="text-xl font-semibold text-white mb-4">Shecan DNS</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-purple-400"></i>
+                            <span>178.22.122.100</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-purple-400"></i>
+                            <span>185.51.200.2</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-hover bg-gradient-to-br from-green-900/50 to-emerald-900/50 p-6 rounded-xl border border-green-700">
+                    <h3 class="text-xl font-semibold text-white mb-4">Begzar DNS</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-green-400"></i>
+                            <span>185.55.225.25</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-green-400"></i>
+                            <span>185.55.226.26</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-hover bg-gradient-to-br from-blue-900/50 to-cyan-900/50 p-6 rounded-xl border border-blue-700">
+                    <h3 class="text-xl font-semibold text-white mb-4">403 DNS</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-blue-400"></i>
+                            <span>10.202.10.202</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-blue-400"></i>
+                            <span>10.202.10.102</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-hover bg-gradient-to-br from-orange-900/50 to-amber-900/50 p-6 rounded-xl border border-orange-700">
+                    <h3 class="text-xl font-semibold text-white mb-4">Radar DNS</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-orange-400"></i>
+                            <span>10.202.10.10</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-orange-400"></i>
+                            <span>10.202.10.11</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-hover bg-gradient-to-br from-red-900/50 to-pink-900/50 p-6 rounded-xl border border-red-700">
+                    <h3 class="text-xl font-semibold text-white mb-4">Electro DNS</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-red-400"></i>
+                            <span>78.157.42.100</span>
+                        </div>
+                        <div class="flex items-center text-gray-300">
+                            <i data-feather="server" class="w-4 h-4 mr-2 text-red-400"></i>
+                            <span>78.157.42.101</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="screenshot" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">Clean & Intuitive Interface</h2>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <img src="https://github.com/ALIILAPRO/dns-changer/raw/master/ScreenShot/pic.JPG" 
+                         alt="DNS Changer Application Interface" 
+                         class="w-full h-auto">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 gradient-bg text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-4xl font-bold mb-6">Ready to Unlock the Internet?</h2>
+                <p class="text-xl mb-8 opacity-90">
+                    Download DNS Freedom Flow today and experience true internet freedom
+                </p>
+                <button class="bg-purple-600 text-white px-12 py-4 rounded-lg font-semibold text-lg hover:bg-purple-700 transition-colors">
+                    <i data-feather="download" class="inline w-5 h-5 mr-2"></i>
+                    Get Started Now
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">DNS Changer</h3>
+                    <p class="text-gray-400">Breaking digital barriers one DNS at a time</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Developer</h3>
+                    <p class="text-gray-400">Created by ALIILAPRO</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">License</h3>
+                    <p class="text-gray-400">GPL-3.0</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect</h3>
+                    <div class="flex space-x-4">
+                        <i data-feather="github" class="w-5 h-5 text-gray-400 hover:text-white cursor-pointer"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                    <p>&copy; 2020 - 2025 DNS Changer - by ALIILAPRO. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        VANTA.GLOBE({
+            el: "#vanta-background",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0x4f46e5,
+            backgroundColor: 0x0f172a
+        });
+
+        feather.replace();
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('Download')) {
+                button.addEventListener('click', function() {
+                    window.open('https://github.com/ALIILAPRO/dns-changer/releases/download/v1.7.0/DNSChange.by.aliilapro.v1_7_0.exe', '_blank');
+                });
+            }
+        });
+
+
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('View on GitHub')) {
+                button.addEventListener('click', function() {
+                    window.open('https://github.com/ALIILAPRO/dns-changer', '_blank');
+                });
+            }
+        });
+
+
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('Connect')) {
+                button.addEventListener('click', function() {
+                    window.open('https://github.com/ALIILAPRO/dns-changer', '_blank');
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>
