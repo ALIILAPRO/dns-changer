@@ -237,11 +237,10 @@
             <div class="text-center">
                 <h2 class="text-4xl font-bold mb-6">Ready to Unlock the Internet?</h2>
                 <p class="text-xl mb-8 opacity-90">
-                    Download DNS Freedom Flow today and experience true internet freedom
+                    To purchase DNS, you can use the link below.
                 </p>
                 <button class="bg-purple-600 text-white px-12 py-4 rounded-lg font-semibold text-lg hover:bg-purple-700 transition-colors">
-                    <i data-feather="download" class="inline w-5 h-5 mr-2"></i>
-                    Get Started Now
+                    www.sheltertm.com
                 </button>
             </div>
         </div>
@@ -327,6 +326,14 @@
             if (button.textContent.includes('Connect')) {
                 button.addEventListener('click', function() {
                     window.open('https://github.com/ALIILAPRO/dns-changer', '_blank');
+                });
+            }
+        });
+
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('www.sheltertm.com')) {
+                button.addEventListener('click', function() {
+                    window.open('https://www.sheltertm.com/', '_blank');
                 });
             }
         });
